@@ -4,3 +4,6 @@ export const keys = {
     s: { pressed: false },
     d: { pressed: false },
 }
+
+export const SCREEN_WIDTH = 128
+export const SCREEN_HEIGHT = 128

@@ -15,8 +15,8 @@ export class TestPlatform {
         }
     }
 
-    draw(c) {
+    draw(c, camera) {
         c.fillStyle = 'red'
-        c.fillRect(this.x, this.y, this.w, this.h)
+        c.fillRect(this.x - camera.x, this.y - camera.y, this.w, this.h)
     }
 }

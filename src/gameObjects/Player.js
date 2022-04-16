@@ -1,4 +1,4 @@
-import { keys } from '../common/globals.js'
+import { keys, SCREEN_HEIGHT, SCREEN_WIDTH } from '../common/globals.js'
 import { colliding } from '../common/utils.js'
 // export const Player = {
 //     w: 50, h: 50,
@@ -21,8 +21,8 @@ import { colliding } from '../common/utils.js'
 
 export class Player {
     constructor(x, y) {
-        this.w = 5
-        this.h = 7
+        this.w = 8
+        this.h = 10
         this.x = x
         this.y = y
         this.xVel = 0
@@ -67,15 +67,15 @@ export class Player {
     //     console.log('test')
     // }
 
-    draw(c) {
+    draw(c, camera) {
         c.fillStyle = 'white'
         c.fillRect(
-            this.x, this.y,
+            this.x - camera.x, this.y - camera.y,
             this.w, this.h
         )
     }
 
-    update(solidObjects) {
+    update(solidObjects, camera) {
         if (
             keys.a.pressed
             && Math.abs(this.xVel) < this.maxVel
@@ -164,7 +164,7 @@ export class Player {
                 this.yVel = 0
             }
         })
-
-        console.log(this.rect)
+        camera.x = this.x - SCREEN_HEIGHT / 2 + this.w / 2
+        camera.y = this.y - SCREEN_WIDTH / 2 + this.h / 2
     }
 }

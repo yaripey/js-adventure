@@ -1,5 +1,5 @@
 import { Player } from './src/gameObjects/Player.js'
-import { keys } from './src/common/globals.js'
+import { keys, SCREEN_HEIGHT, SCREEN_WIDTH } from './src/common/globals.js'
 import { TestPlatform } from './src/gameObjects/testObjects.js'
 
 const canvas = document.querySelector('canvas')
@@ -8,8 +8,8 @@ c.webkitImageSmoothingEnabled = false;
 c.mozImageSmoothingEnabled = false;
 c.imageSmoothingEnabled = false;
 
-canvas.width = 128
-canvas.height = 128
+canvas.width = SCREEN_WIDTH
+canvas.height = SCREEN_HEIGHT
 
 c.fillStyle = 'black'
 c.fillRect(0, 0, canvas.width, canvas.height)
@@ -40,6 +40,11 @@ const solidObjects = [bottomPlatform, bottomPlatform2]
 
 let be = Date.now(), fps = 0
 
+const camera = {
+    x: 0,
+    y: 0,
+}
+
 const fpsmeter = document.querySelector("#fps")
 const animate = () => {
     // Resetting screen
@@ -47,10 +52,10 @@ const animate = () => {
     c.fillRect(0, 0, canvas.width, canvas.height)
 
 
-    player.update(solidObjects)
-    bottomPlatform.draw(c)
-    bottomPlatform2.draw(c)
-    player.draw(c)
+    player.update(solidObjects, camera)
+    bottomPlatform.draw(c, camera)
+    bottomPlatform2.draw(c, camera)
+    player.draw(c, camera)
 
     let now = Date.now()
     fpsmeter.value = Math.round(1000 / (now - be))
