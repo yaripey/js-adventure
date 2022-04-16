@@ -1,5 +1,5 @@
-import { keys } from '/src/common/globals.js'
-import { colliding } from '/src/common/utils.js'
+import { keys } from '../common/globals.js'
+import { colliding } from '../common/utils.js'
 // export const Player = {
 //     w: 50, h: 50,
 //     speed: 2,
