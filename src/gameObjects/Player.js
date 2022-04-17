@@ -10,14 +10,20 @@ export class Player {
     constructor(x, y) {
         this.w = 8
         this.h = 10
+
         this.x = x
         this.y = y
+
         this.xVel = 0
         this.yVel = 0
         this.maxVel = 2
+
         this.acc = 0.1
+
         this.airborne = false
         this.type = [OBJ_TYPE_PLAYER]
+
+
     }
 
     get top() { return this.y }
