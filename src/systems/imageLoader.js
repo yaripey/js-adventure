@@ -2,7 +2,7 @@ import { TILE_SIZE } from "../common/globals.js"
 
 export const sprites = {}
 
-const spritesPath = "/media/sprites/"
+const spritesPath = "/js-adventure/media/sprites/"
 
 const spritesPaths = {
     marcusIdleRight: spritesPath + "marcus_idle_right.png",
