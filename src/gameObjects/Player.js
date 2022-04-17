@@ -1,5 +1,6 @@
 import {
     keys,
+    OBJ_TYPE_PLAYER,
     SCREEN_HEIGHT,
     SCREEN_WIDTH
 } from '../common/globals.js'
@@ -16,6 +17,7 @@ export class Player {
         this.maxVel = 2
         this.acc = 0.1
         this.airborne = false
+        this.type = [OBJ_TYPE_PLAYER]
     }
 
     get top() { return this.y }
@@ -93,6 +95,7 @@ export class Player {
 
         // Move horizontally
         this.x += this.xVel
+        this.x = Number(this.x)
 
         // Get all colliding objects
         objs = solidObjects.filter(obj =>
