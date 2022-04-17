@@ -1,23 +1,9 @@
-import { keys, SCREEN_HEIGHT, SCREEN_WIDTH } from '../common/globals.js'
+import {
+    keys,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH
+} from '../common/globals.js'
 import { colliding } from '../common/utils.js'
-// export const Player = {
-//     w: 50, h: 50,
-//     speed: 2,
-//     pos: { x: 10, y: 10 },
-//     draw: function (c) {
-//         c.fillStyle = 'white'
-//         c.fillRect(
-//             this.pos.x, this.pos.y,
-//             this.width, this.height
-//         )
-//     },
-//     update: function () {
-//         if (keys.a.pressed) this.pos.x -= this.speed
-//         if (keys.d.pressed) this.pos.x += this.speed
-//         if (keys.w.pressed) this.pos.y -= this.speed
-//         if (keys.s.pressed) this.pos.y += this.speed
-//     }
-// }
 
 export class Player {
     constructor(x, y) {
@@ -37,6 +23,11 @@ export class Player {
     get left() { return this.x }
     get right() { return this.x + this.w }
 
+    set top(v) { this.y = v }
+    set bottom(v) { this.y = v - this.h }
+    set left(v) { this.x = v }
+    set right(v) { this.x = v - this.w }
+
     get rect() {
         return {
             top: this.top,
@@ -45,27 +36,6 @@ export class Player {
             right: this.right,
         }
     }
-
-    set top(v) { this.y = v }
-    set bottom(v) { this.y = v - this.h }
-    set left(v) { this.x = v }
-    set right(v) { this.x = v - this.w }
-
-    // set rect(rect) {
-    //     if (rect.left)
-    //         this.x = rect.left
-    //     else if (rect.right)
-    //         this.x = rect.right - this.w
-
-    //     if (rect.top)
-    //         this.y = rect.top
-    //     else if (rect.bottom)
-    //         this.y = rect.bottom - this.h
-    // }
-
-    // set [rect](v) {
-    //     console.log('test')
-    // }
 
     draw(c, camera) {
         c.fillStyle = 'white'
@@ -79,52 +49,58 @@ export class Player {
         if (
             keys.a.pressed
             && Math.abs(this.xVel) < this.maxVel
-        ) this.xVel -= this.acc
-        else if (
+        ) {
+            // If 'a' key is pressed and the speed
+            // didn't reach limit accelerate to the left
+            this.xVel -= this.acc
+        } else if (
             keys.d.pressed
             && Math.abs(this.xVel) < this.maxVel
-        ) this.xVel += this.acc
-        else if (this.xVel < 0) this.xVel += this.acc
-        else if (this.xVel > 0) this.xVel -= this.acc
+        ) {
+            // If 'd' key is pressed and the speed
+            // didn't reach limit accelerate to the right
+            this.xVel += this.acc
+        } else if (this.xVel < 0) {
+            // Slow down
+            this.xVel += this.acc
+        } else if (this.xVel > 0) {
+            // Slow down
+            this.xVel -= this.acc
+        }
 
-        // this.yVel += 0.1
         if (this.airborne)
             if (this.yVel < this.maxVel)
+                // If airborne and speed didn't reach limit
+                // accelerate down
                 this.yVel += this.acc
 
         if (
             keys.w.pressed
             && !this.airborne
         ) {
+            // Jump
             this.yVel = -3
             this.airborne = true
         }
 
+        // Round position because floats doesn't work
+        // very precise
         this.xVel = Number(this.xVel.toFixed(2))
         this.yVel = Number(this.yVel.toFixed(2))
 
-
+        // Placeholder for colliding objects
         let objs = []
 
-        // if (this.xVel > 0) {
-        //     const rect0 = {
-        //         ...this.rect,
-        //         left: this.rect.left + this.xVel,
-        //         right: this.rect.right + this.right
-        //     }
-        //     objs = solidObjects.filter(obj => {
-        //         colliding(rect0, obj.rect)
-        //     })
-        //     objs.forEach(obj => {
-        //         if ()
-        //     })
-        // }
-
+        // Move horizontally
         this.x += this.xVel
+
+        // Get all colliding objects
         objs = solidObjects.filter(obj =>
             colliding(this.rect, obj.rect))
-
         objs.forEach(obj => {
+            // For each colliding object define
+            // the direction in which player is going,
+            // stick to the object and stop the player.
             if (
                 this.xVel > 0
                 && this.right > obj.rect.left
@@ -141,17 +117,26 @@ export class Player {
             }
         })
 
+        // Move vertically
         this.y += this.yVel
+        // Always set airborne true, it will be reversed
+        // if there is collision with an object below.
+        // This enables falling when going off a platform.
         this.airborne = true
 
+        // Get all colliding objects
         objs = solidObjects.filter(obj =>
             colliding(this.rect, obj.rect))
-
         objs.forEach(obj => {
+            // For each colliding object stick to that
+            // object and stop the player.
             if (
                 this.yVel > 0
                 && this.bottom > obj.rect.top
             ) {
+                // If it's something the player
+                // landed on, turn of airborne to enable
+                // jumping again.
                 this.bottom = obj.rect.top
                 this.yVel = 0
                 this.airborne = false
@@ -164,6 +149,8 @@ export class Player {
                 this.yVel = 0
             }
         })
+
+        // Move the camera
         camera.x = this.x - SCREEN_HEIGHT / 2 + this.w / 2
         camera.y = this.y - SCREEN_WIDTH / 2 + this.h / 2
     }

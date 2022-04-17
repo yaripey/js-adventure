@@ -38,7 +38,7 @@ const bottomPlatform2 = new TestPlatform(65, 80, 50, 20)
 
 const solidObjects = [bottomPlatform, bottomPlatform2]
 
-let be = Date.now(), fps = 0
+let be = Date.now(),
 
 const camera = {
     x: 0,
