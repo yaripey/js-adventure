@@ -1,7 +1,6 @@
 export const keys = {
-    w: { pressed: false },
+    space: { pressed: false },
     a: { pressed: false },
-    s: { pressed: false },
     d: { pressed: false },
 }
 

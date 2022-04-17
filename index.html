@@ -2,22 +2,33 @@
 <html lang="en">
 <head>
     <title>JS Game</title>
-    <style>
-        canvas {
-            width: 512px;
-            height: 512px;
-
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -webkit-crisp-edges;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <canvas></canvas>
+    <div class="container">
+        <canvas id="game" class="game"></canvas>
+        <div class="blocks">
+            <div class="block">
+                <h1>JS Game</h1>
+                <p>
+                    Hi! This is a game, written in vanilla
+                    JS. It is a simple pet project that might
+                    turn into something bigger.
+                </p>
+            </div>
+            <div class="block">
+                <h2>Controls</h2>
+                <p class="controls-p">
+                    Use <span class="buttonSmall">A</span> and <span class="buttonSmall">D</span> to go left-right, use <span class="buttonSmall">Space</span> to jump.
+                </p>
+            </div>
+            <div class="block">
+                <h2>Debugging</h2>
+                <label for="fps">FPS</label>
+                <input id="fps" name="fps" type="text" disabled>
+            </div>
+        </div>
+    </div>
     <script type="module" src="./index.js"></script>
-    <label for="fps">FPS</label>
-    <input id="fps" name="fps" type="text" disabled>
 </body>
 </html>

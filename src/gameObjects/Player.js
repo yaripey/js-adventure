@@ -75,7 +75,7 @@ export class Player {
                 this.yVel += this.acc
 
         if (
-            keys.w.pressed
+            keys.space.pressed
             && !this.airborne
         ) {
             // Jump

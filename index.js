@@ -15,20 +15,18 @@ c.fillStyle = 'black'
 c.fillRect(0, 0, canvas.width, canvas.height)
 
 window.addEventListener('keydown', (e) => {
-    switch (e.key) {
-        case 'w': keys.w.pressed = true; break
-        case 'a': keys.a.pressed = true; break
-        case 's': keys.s.pressed = true; break
-        case 'd': keys.d.pressed = true; break
+    switch (e.code) {
+        case 'Space': keys.space.pressed = true; break
+        case 'KeyA': keys.a.pressed = true; break
+        case 'KeyD': keys.d.pressed = true; break
     }
 })
 
 window.addEventListener('keyup', (e) => {
-    switch (e.key) {
-        case 'w': keys.w.pressed = false; break
-        case 'a': keys.a.pressed = false; break
-        case 's': keys.s.pressed = false; break
-        case 'd': keys.d.pressed = false; break
+    switch (e.code) {
+        case 'Space': keys.space.pressed = false; break
+        case 'KeyA': keys.a.pressed = false; break
+        case 'KeyD': keys.d.pressed = false; break
     }
 })
 
