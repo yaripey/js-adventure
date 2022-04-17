@@ -1,6 +1,6 @@
-import { Player } from './src/gameObjects/Player.js'
-import { keys, SCREEN_HEIGHT, SCREEN_WIDTH } from './src/common/globals.js'
-import { TestPlatform } from './src/gameObjects/testObjects.js'
+import { Player } from './gameObjects/Player.js'
+import { keys, SCREEN_HEIGHT, SCREEN_WIDTH } from './common/globals.js'
+import { TestPlatform } from './gameObjects/testObjects.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -39,8 +39,8 @@ const solidObjects = [bottomPlatform, bottomPlatform2]
 let be = Date.now()
 
 const camera = {
-    x: 0,
-    y: 0,
+    x: SCREEN_WIDTH / 2,
+    y: SCREEN_HEIGHT / 2,
 }
 
 const fpsmeter = document.querySelector("#fps")

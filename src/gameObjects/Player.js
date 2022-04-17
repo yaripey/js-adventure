@@ -151,7 +151,7 @@ export class Player {
         })
 
         // Move the camera
-        camera.x = this.x - SCREEN_HEIGHT / 2 + this.w / 2
-        camera.y = this.y - SCREEN_WIDTH / 2 + this.h / 2
+        camera.x = this.x - SCREEN_WIDTH / 2 + this.w / 2
+        camera.y = this.y - SCREEN_HEIGHT / 2 + this.h / 2
     }
 }
