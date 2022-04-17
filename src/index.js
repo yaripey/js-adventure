@@ -1,8 +1,7 @@
-import { Player } from './gameObjects/Player.js'
 import { keys, SCREEN_HEIGHT, SCREEN_WIDTH } from './common/globals.js'
-import { TestPlatform } from './gameObjects/testObjects.js'
 import { ObjectManager } from './systems/objectManager.js'
 import { testLvl } from './systems/lvlbuilder.js'
+import { loadSprites } from './systems/imageLoader.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -32,12 +31,6 @@ window.addEventListener('keyup', (e) => {
     }
 })
 
-// const player = new Player(10, 20)
-// const bottomPlatform = new TestPlatform(10, 100, 50, 20)
-// const bottomPlatform2 = new TestPlatform(65, 80, 50, 20)
-
-// const solidObjects = [bottomPlatform, bottomPlatform2]
-
 let be = Date.now()
 
 const camera = {
@@ -50,9 +43,11 @@ const fpsmeter = document.querySelector("#fps")
 const objManager = new ObjectManager()
 objManager.initLvl(testLvl)
 
+loadSprites()
+
 const animate = () => {
     // Resetting screen
-    c.fillStyle = 'black'
+    c.fillStyle = '#333'
     c.fillRect(0, 0, canvas.width, canvas.height)
 
 
@@ -62,8 +57,6 @@ const animate = () => {
     let now = Date.now()
     fpsmeter.value = Math.round(1000 / (now - be))
     be = now
-
-
 
     window.requestAnimationFrame(animate)
 }

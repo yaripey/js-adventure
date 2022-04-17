@@ -11,3 +11,8 @@ export const TILE_SIZE = 8
 
 export const OBJ_TYPE_PLAYER = 'player'
 export const OBJ_TYPE_SOLID = 'solid'
+
+export const DIRECTION_RIGHT = 'right'
+export const DIRECTION_LEFT = 'left'
+export const DIRECTION_UP = 'up'
+export const DIRECTION_DOWN = 'down'

@@ -1,10 +1,13 @@
 import {
+    DIRECTION_RIGHT,
+    DIRECTION_LEFT,
     keys,
     OBJ_TYPE_PLAYER,
     SCREEN_HEIGHT,
     SCREEN_WIDTH
 } from '../common/globals.js'
 import { colliding } from '../common/utils.js'
+import { sprites } from '../systems/imageLoader.js'
 
 export class Player {
     constructor(x, y) {
@@ -23,7 +26,12 @@ export class Player {
         this.airborne = false
         this.type = [OBJ_TYPE_PLAYER]
 
+        this.direction = DIRECTION_RIGHT
 
+        this.sprite = sprites["marcusIdleRight"]
+        this.spriteName = "marcusIdleRight"
+        this.elapsed = 0
+        this.frame = 0
     }
 
     get top() { return this.y }
@@ -46,11 +54,29 @@ export class Player {
     }
 
     draw(c, camera) {
-        c.fillStyle = 'white'
-        c.fillRect(
-            this.x - camera.x, this.y - camera.y,
-            this.w, this.h
+        if (!this.sprite) return
+        c.drawImage(
+            this.sprite.sprite,
+            this.frame * this.w,
+            0,
+            this.sprite.sprite.width / this.sprite.frames,
+            this.sprite.sprite.height,
+            this.x - camera.x,
+            this.y - camera.y,
+            this.sprite.sprite.width / this.sprite.frames,
+            this.sprite.sprite.height
         )
+
+        if (this.sprite.frames > 1) {
+            this.elapsed++
+        }
+
+        if (this.elapsed % 10 === 0) {
+            if (this.frame < this.sprite.frames - 1)
+                this.frame++
+            else
+                this.frame = 0
+        }
     }
 
     update(solidObjects, camera) {
@@ -58,6 +84,7 @@ export class Player {
             keys.a.pressed
             && Math.abs(this.xVel) < this.maxVel
         ) {
+            this.direction = DIRECTION_LEFT
             // If 'a' key is pressed and the speed
             // didn't reach limit accelerate to the left
             this.xVel -= this.acc
@@ -65,6 +92,7 @@ export class Player {
             keys.d.pressed
             && Math.abs(this.xVel) < this.maxVel
         ) {
+            this.direction = DIRECTION_RIGHT
             // If 'd' key is pressed and the speed
             // didn't reach limit accelerate to the right
             this.xVel += this.acc
@@ -101,7 +129,7 @@ export class Player {
 
         // Move horizontally
         this.x += this.xVel
-        this.x = Number(this.x)
+        this.x = Math.round(this.x)
 
         // Get all colliding objects
         objs = solidObjects.filter(obj =>
@@ -125,15 +153,13 @@ export class Player {
                 this.left = obj.rect.right
             }
         })
-
-        this.x = Math.round(this.x)
-
         // Move vertically
         this.y += this.yVel
+        this.y = Math.round(this.y)
         // Always set airborne true, it will be reversed
         // if there is collision with an object below.
         // This enables falling when going off a platform.
-        this.airborne = true
+        // this.airborne = true
 
         // Get all colliding objects
         objs = solidObjects.filter(obj =>
@@ -161,10 +187,52 @@ export class Player {
             }
         })
 
-        this.y = Math.round(this.y)
 
         // Move the camera
         camera.x = this.x - SCREEN_WIDTH / 2 + this.w / 2
         camera.y = this.y - SCREEN_HEIGHT / 2 + this.h / 2
+
+
+        // Updating sprite
+        let directionName = ""
+        let actionName = ""
+
+        if (this.direction === DIRECTION_LEFT) {
+            directionName = "Left"
+        } else {
+            directionName = "Right"
+        }
+
+        if (this.airborne) {
+            if (this.yVel < 0) {
+                actionName = "Rising"
+            } else {
+                actionName = "Falling"
+            }
+        } else if (this.xVel === 0) {
+            actionName = "Idle"
+        } else if (this.xVel !== 0) {
+            actionName = "Walking"
+        }
+
+        if ("marcus" + actionName + directionName !== this.spriteName) {
+            this.spriteName = "marcus" + actionName + directionName
+            this.frame = 0
+            this.elapsed = 0
+        }
+
+        this.sprite = sprites["marcus" + actionName + directionName]
+        if (this.sprite) {
+            this.w = this.sprite.sprite.width / this.sprite.frames
+            this.h = this.sprite.sprite.height
+        }
+
+        // Check if standing on something
+        const testObjs = solidObjects.filter(obj => {
+            return colliding({ left: this.left, right: this.right, top: this.top, bottom: this.bottom + 2 }, obj.rect)
+        })
+        if (testObjs.length === 0) {
+            this.airborne = true
+        }
     }
 }
