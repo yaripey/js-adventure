@@ -120,6 +120,8 @@ export class Player {
             }
         })
 
+        this.x = Math.round(this.x)
+
         // Move vertically
         this.y += this.yVel
         // Always set airborne true, it will be reversed
@@ -152,6 +154,8 @@ export class Player {
                 this.yVel = 0
             }
         })
+
+        this.y = Math.round(this.y)
 
         // Move the camera
         camera.x = this.x - SCREEN_WIDTH / 2 + this.w / 2
